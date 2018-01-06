@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PeerConnection PRANSWER Demo</title>
+    <style>
+        video {
+            border: 5px solid black;
+            width: 320px;
+            height: 240px;
+        }
+    </style>
+</head>
+<body>
+<video id="vid1" autoplay="true" muted="true"></video>
+<video id="vid2" autoplay></video>
+<br>
+<button id="btn_start">start</button>
+<button id="btn_receiveOffer">receiveOffer</button>
+<button id="btn_createAnswer">createAnswer</button>
+<button id="btn_finalAnswer">finalAnswer</button>
+
+<br>
+<br>offerDesc
+<textarea id="input_offerDesc"></textarea>
+<br>
+<br>answerDesc
+<textarea id="output_answerDesc"></textarea>
+</body>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="mcrtc.js"></script>
+<script src="pr-answer2.js"></script>
+</html>
