@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PeerConnection Demo callee</title>
+    <style>
+        video {
+            border: 5px solid black;
+            width: 320px;
+            height: 240px;
+        }
+        textarea {
+            width: 320px;
+            height: 240px;            
+        }
+    </style>
+</head>
+<body>
+<video id="vid1" autoplay="true" muted="true" playsinline></video>
+<video id="vid2" autoplay playsinline></video>
+<br>
+<button id="btn_start">start</button>
+<button id="btn_receiveOffer">receiveOffer</button>
+<button id="btn_finalAnswer">Answer</button>
+&nbsp;
+<button id="btn_test">test</button>
+
+<br>
+<br>offerDesc
+<textarea id="input_offerDesc"></textarea>
+<br>
+<br>answerDesc
+<textarea id="output_answerDesc"></textarea>
+</body>
+
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="moWebsocket.js"></script>
+<script src="callee.js"></script>
+</html>
