@@ -1,15 +1,20 @@
 'use strict';
 
+function trace(arg) {
+    var now = (window.performance.now() / 1000).toFixed(3);
+    console.log(now + ': ', arg);
+}
+
 var input_offerDesc = document.querySelector('textarea#input_offerDesc');
 var output_answerDesc = document.querySelector('textarea#output_answerDesc');
 
-var vid1 = document.getElementById('vid1');
-var vid2 = document.getElementById('vid2');
+var vid1 = document.querySelector('#vid1');
+var vid2 = document.querySelector('#vid2');
 
-var btn_start = document.getElementById('btn_start');
-var btn_receiveOffer = document.getElementById('btn_receiveOffer');
-var btn_createAnswer = document.getElementById('btn_createAnswer');
-var btn_finalAnswer = document.getElementById('btn_finalAnswer');
+var btn_start = document.querySelector('#btn_start');
+var btn_receiveOffer = document.querySelector('#btn_receiveOffer');
+var btn_createAnswer = document.querySelector('#btn_createAnswer');
+var btn_finalAnswer = document.querySelector('#btn_finalAnswer');
 
 btn_start.addEventListener('click', start);
 btn_receiveOffer.addEventListener('click', test_receiveOffer);
@@ -59,8 +64,22 @@ function start() {
         trace('Using Audio device: ' + audioTracks[0].label);
     }
 
-    var servers = null;
-    local_peer = new RTCPeerConnection(servers);
+    var servers = {
+        iceTransportPolicy: "all", // set to "relay" to force TURN.
+        iceServers: [
+        ]
+    };
+    servers.iceServers.push({urls: "stun:stun.l.google.com:19302"});
+    servers.iceServers.push({
+                    urls: "turn:webrtc.moberan.com",
+                    username: "zoops", credential: "1234"
+                });
+
+    var pcConstraints = {
+        'optional': []
+    };
+
+    local_peer = new RTCPeerConnection(servers, pcConstraints);    
     local_peer.onicecandidate = function (e) {
         onIceCandidate(local_peer, e);
     };

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PeerConnection PRANSWER Demo</title>
+    <title>PeerConnection Demo caller</title>
     <style>
         video {
             border: 5px solid black;
@@ -11,8 +11,8 @@
     </style>
 </head>
 <body>
-<video id="vid1" autoplay="true" muted="true"></video>
-<video id="vid2" autoplay></video>
+<video id="vid1" autoplay="true" muted="true" playsinline></video>
+<video id="vid2" autoplay playsinline></video>
 <br>
 <button id="btn_start">start</button>
 <button id="btn_receiveAnswer">receiveAnswer</button>
@@ -25,6 +25,5 @@
 <textarea id="input_answerDesc"></textarea>
 </body>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-<script src="mcrtc.js"></script>
-<script src="pr-answer1.js"></script>
+<script src="caller.js"></script>
 </html>
