@@ -13,9 +13,11 @@ var vid1 = document.querySelector('#vid1');
 var vid2 = document.querySelector('#vid2');
 
 var btn_start = document.querySelector('#btn_start');
+var btn_finalOffer = document.querySelector('#btn_finalOffer');
 var btn_receiveAnswer = document.querySelector('#btn_receiveAnswer');
 
 btn_start.addEventListener('click', onStart);
+btn_finalOffer.addEventListener('click', onOffer);
 btn_receiveAnswer.addEventListener('click', onReceiveAnswer);
 // ---------------------------------------------------------------------------------
 
@@ -23,24 +25,10 @@ btn_receiveAnswer.addEventListener('click', onReceiveAnswer);
 var local_peer = null;
 var localstream = null;
 // ---------------------------------------------------------------------------------
-
-function onReceiveAnswer() {
-    var sdpString = input_answerDesc.value;
-    receiveAnswer(sdpString);
-}
-
 function cbGotStream(stream) {
     trace('Received local stream');
-    vid1.srcObject = stream;
     localstream = stream;
-}
-
-function cbGotRemoteStream(e) {
-    trace('## Received remote stream try');
-    if (vid2.srcObject !== e.streams[0]) {
-        vid2.srcObject = e.streams[0];
-        trace('## Received remote stream success');
-    }
+    vid1.srcObject = stream;
 }
 
 navigator.mediaDevices.getUserMedia({
@@ -52,16 +40,15 @@ navigator.mediaDevices.getUserMedia({
         alert('getUserMedia() error: ' + e);
     });
 
-function onStart() {
-    var videoTracks = localstream.getVideoTracks();
-    var audioTracks = localstream.getAudioTracks();
-    if (videoTracks.length > 0) {
-        trace('Using Video device: ' + videoTracks[0].label);
+function cbGotRemoteStream(evt) {
+    trace('## Received remote stream try');
+    if (vid2.srcObject !== evt.streams[0]) {
+        vid2.srcObject = evt.streams[0];
+        trace('## Received remote stream success');
     }
-    if (audioTracks.length > 0) {
-        trace('Using Audio device: ' + audioTracks[0].label);
-    }
+}
 
+function onStart() {
     var servers = {
         iceTransportPolicy: "all", // set to "relay" to force TURN.
         iceServers: [
@@ -88,6 +75,10 @@ function onStart() {
         }
     );
 
+    trace('## start success = create RTCPeerConnection and set callback ');
+}
+
+function onOffer() {
     var offerOptions = {
         offerToReceiveAudio: 1,
         offerToReceiveVideo: 1
@@ -99,13 +90,34 @@ function onStart() {
         cbCreateOfferSuccess,
         cbCreateOfferError
     );
+
+    trace('## createOffer success');
 }
+
+function receiveAnswer(sdpString) {
+    trace('receiveAnswer');
+    var descObject = {
+        type: 'pranswer',
+        sdp: sdpString
+    };
+    local_peer.setRemoteDescription(descObject);
+}
+
+function onReceiveAnswer() {
+    var sdpString = input_answerDesc.value;
+    receiveAnswer(sdpString);
+
+    trace('## receiveAnswer success');
+}
+
 function cbCreateOfferError(error) {
     trace('Failed to create session description: ' + error.toString());
     stop();
 }
 
 function cbCreateOfferSuccess(desc) {
+    console.info(desc);
+
     local_peer.setLocalDescription(desc).then(
         cbSetLocalDescriptionSuccess,
         cbSetLocalDescriptionError
@@ -140,13 +152,4 @@ function cbCheckIceCandidateAdded(candidateObject) {
 function cbCheckIceCandidateCompleted(descObject) {
     trace('cbCheckIceCandidateCompleted');
     output_offerDesc.value = descObject.sdp;
-}
-
-function receiveAnswer(sdpString) {
-    trace('receiveAnswer');
-    var descObject = {
-        type: 'pranswer',
-        sdp: sdpString
-    };
-    local_peer.setRemoteDescription(descObject);
 }
