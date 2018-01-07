@@ -134,17 +134,17 @@ function stop() {
 
 function cbIceCandidate(pc, event) {
     if (event.candidate)
-        onCheckIcdCandidateAdded(event.candidate);
+        onCheckIceCandidateAdded(event.candidate);
     else
-        onCheckIcdCandidateCompleted(pc.localDescription);
+        onCheckIceCandidateCompleted(pc.localDescription);
 }
-function onCheckIcdCandidateAdded(candidateObject) {
+function onCheckIceCandidateAdded(candidateObject) {
     trace('cbCheckIceCandidateAdded');
     // ICE candidate 가 추가되면 바로바로 연결 시도를 해 볼 수 있다. 
     // 이 예제는 추가가 완료되면 sdp 를 출력하기 때문에 여기서 아무것도 하지 않는다.
 }
 
-function onCheckIcdCandidateCompleted(descObject) {
-    trace('onCheckIcdCandidateCompleted');
+function onCheckIceCandidateCompleted(descObject) {
+    trace('onCheckIceCandidateCompleted');
     output_answerDesc.value = descObject.sdp;
 }
