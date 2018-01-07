@@ -49,18 +49,13 @@ function cbGotRemoteStream(evt) {
 }
 
 function onStart() {
-    var servers = {
+    var cfg = {
         iceTransportPolicy: "all", // set to "relay" to force TURN.
         iceServers: [
         ]
     };
-    servers.iceServers.push({urls: "stun:stun.l.google.com:19302"});
-
-    var pcConstraints = {
-        'optional': []
-    };
-
-    local_peer = new RTCPeerConnection(servers, pcConstraints);
+    cfg.iceServers.push({urls: "stun:stun.l.google.com:19302"});
+    local_peer = new RTCPeerConnection(cfg);
     local_peer.onicecandidate = function (evt) {
         cbIceCandidate(local_peer, evt);
     };
