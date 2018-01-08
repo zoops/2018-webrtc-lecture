@@ -37,7 +37,8 @@ btn_toggle_mic.addEventListener('click', onToggleMic);
 
 // Value
 var local_peer = null;
-var localstream;
+var localstream = null;
+var remotestream = null;
 // ---------------------------------------------------------------------------------
 function gotDevices(deviceInfos) {
     // Handles being called several times to update labels. Preserve values.
@@ -174,8 +175,8 @@ function onToggleVideo() {
   
 }
 function onToggleSound() {
-    if (this.remoteStreamObject) {
-        var items = this.remoteStreamObject.getAudioTracks();
+    if (remotestream) {
+        var items = remotestream.getAudioTracks();
         if (items && items.length > 0)
           items[0].enabled = items[0].enabled;
     }
@@ -201,6 +202,7 @@ function cbGotRemoteStream(evt) {
     trace('## Received remote stream try');
     if (vid2.srcObject !== evt.streams[0]) {
         vid2.srcObject = evt.streams[0];
+        remotestream = evt.streams[0];
         trace('## Received remote stream success');
     }
 }
