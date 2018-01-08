@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PeerConnection Demo caller</title>
+    <style>
+        video {
+            border: 5px solid black;
+            width: 320px;
+            height: 240px;
+        }
+        textarea {
+            width: 320px;
+            height: 240px;            
+        }        
+    </style>
+    <style>
+        .none {
+            -webkit-filter: none;
+            filter: none;
+        }
+        .blur {
+            -webkit-filter: blur(3px);
+            filter: blur(3px);
+        }
+        .grayscale {
+            -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+        }
+        .invert {
+            -webkit-filter: invert(1);
+            filter: invert(1);
+        }
+        .sepia {
+            -webkit-filter: sepia(1);
+            filter: sepia(1);
+        }
+        .brightness {
+            -webkit-filter: brightness(0.4);
+            filter: brightness(0.4);
+        }
+        .contrast {
+            -webkit-filter: contrast(200%);
+            filter: contrast(200%);
+        }
+        .drop-shadow {
+            -webkit-filter: drop-shadow(16px 16px 20px blue);
+            filter: drop-shadow(16px 16px 20px blue);
+        }
+        .hue-rotate {
+            -webkit-filter: hue-rotate(90deg);
+            filter: hue-rotate(90deg);
+        }
+        .opacity {
+            -webkit-filter: opacity(25%);
+            filter: opacity(25%);
+        }
+        .saturate {
+            -webkit-filter: saturate(30%);
+            filter: saturate(30%);
+        }
+        .multi {
+            -webkit-filter: contrast(175%) brightness(3%);
+            filter: contrast(175%) brightness(3%);
+        }
+        button#snapshot {
+            margin: 0 10px 25px 0;
+            width: 110px;
+        }
+        video {
+            object-fit: cover;
+        }
+        .mirror {
+            transform: scale(-1, 1);            /*For Firefox (& IE) */
+            -webkit-transform: scale(-1, 1);     /*for Chrome & Opera (& Safari) */        
+        }
+    </style>    
+</head>
+<body>
+<label for="select">Filter: </label>
+<select id="filter">
+    <option value="none">None</option>
+    <option value="blur">Blur</option>
+    <option value="grayscale">Grayscale</option>
+    <option value="invert">Invert</option>
+    <option value="sepia">Sepia</option>
+
+    <option value="brightness">brightness</option>
+    <option value="contrast">contrast</option>
+    <option value="drop-shadow">drop-shadow</option>
+    <option value="hue-rotate">hue-rotate</option>
+    <option value="opacity">opacity</option>
+    <option value="saturate">saturate</option>
+    <option value="multi">multi</option>
+</select>    
+<button id="snapshot">Take snapshot</button><button id="toggle-mirror">toggle-mirror</button>
+<canvas></canvas>
+<br/>
+<video id="vid1" autoplay="true" muted="true" playsinline></video>
+<video id="vid2" autoplay playsinline></video>
+<br>
+<button id="btn_start">start</button>
+<button id="btn_finalOffer">Offer</button>
+<button id="btn_receiveAnswer">receiveAnswer</button>
+
+<br>
+<br>offerDesc
+<textarea id="output_offerDesc"></textarea>
+<br>
+<br>answerDesc
+<textarea id="input_answerDesc"></textarea>
+</body>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="caller.js"></script>
+</html>
