@@ -178,14 +178,14 @@ function onToggleSound() {
     if (remotestream) {
         var items = remotestream.getAudioTracks();
         if (items && items.length > 0)
-          items[0].enabled = items[0].enabled;
+          items[0].enabled = !items[0].enabled;
     }
 }
 function onToggleMic() {
     if (localstream) {
         var items = localstream.getAudioTracks();
         if (items && items.length > 0)
-          items[0].enabled = items[0].enabled;
+          items[0].enabled = !items[0].enabled;
     }
 }
 
