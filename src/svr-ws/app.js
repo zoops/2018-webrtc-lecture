@@ -1,12 +1,22 @@
 var express        = require( 'express' );
-var http           = require( 'http' );
 var app            = express();
 var expressWs      = require('express-ws')(app);
 
 var signalClients = [];
 var rooms = {};
+var protocolType = {
+  ERR : '99',
+  MSG : '00',
+  START : '01',
+};
 
 app.set( 'port', process.env.PORT || 3001 );
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/', function(req, res, next){
   res.send('Hello World');  
@@ -75,14 +85,14 @@ app.ws('/room/:room', function(ws, req) {
     } else {
       console.info(room_name + ' : ' + rooms[room_name].size);      
       if (rooms[room_name].size >= 2) {
-        var errmsg = {code : '99', msg : 'can not enter more than two client' };
+        var errmsg = {code : protocolType.ERR, msg : 'can not enter more than two client' };
         ws.send(JSON.stringify(errmsg));
         ws.close();
       }
       else {
         rooms[room_name].add(ws);
         if (rooms[room_name].size == 2) {
-          broadcast(rooms[room_name], null, '01', 'start');
+          broadcast(rooms[room_name], null, protocolType.START, 'start');
         }
       }    
     }
@@ -106,7 +116,7 @@ app.ws('/room/:room', function(ws, req) {
     });
 
     ws.on('message', function(msg) {
-        broadcast(room, ws, '00', msg);
+        broadcast(room, ws, protocolType.MSG, msg);
     });
   } catch (error) {
     console.error(error);    
