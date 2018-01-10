@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>inu test</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+        var ws = new WebSocket('ws://127.0.0.1:3001/echo');
+        ws.onopen = function() {
+          console.info('ws open');
+        };
+        ws.onclose = function(evt) {
+            console.info('ws onclose');
+        };
+        ws.onmessage = function(evt) {
+            console.info('ws onmessage' + evt.data);
+        };
+      
+        function dosend() {
+            try {
+                console.info('dosend');
+                var data = document.querySelector('#msg').value;
+                ws.send(data);
+            } catch (error) {
+                console.info(error);                
+            }
+        }
+      
+        </script>    
+  </head>
+  <body>
+    <h1>inu test</h1>
+    <p>Welcome to inu test</p>
+
+    <input id="msg"><button id="btSend" onclick="dosend();">send</button>
+  </body>
+ 
+</html>
