@@ -79,9 +79,11 @@ function broadcast(room, from_ws, code, message) {
 app.ws('/room/:room', function(ws, req) {
   try {
     var room_name = req.params.room;
+    var pwd = req.query.pwd;
     if (!(room_name in rooms)) {
       console.info({ room: room_name }, "new room created");
         rooms[room_name] = new Set([ws]);
+        rooms[room_name].pwd = pwd;
     } else {
       console.info(room_name + ' : ' + rooms[room_name].size);      
       if (rooms[room_name].size >= 2) {
@@ -90,9 +92,16 @@ app.ws('/room/:room', function(ws, req) {
         ws.close();
       }
       else {
-        rooms[room_name].add(ws);
-        if (rooms[room_name].size == 2) {
-          broadcast(rooms[room_name], null, protocolType.START, 'start');
+        if (pwd == rooms[room_name].pwd) {
+          rooms[room_name].add(ws);
+          if (rooms[room_name].size == 2) {
+            broadcast(rooms[room_name], null, protocolType.START, 'start');
+          }
+        }
+        else {
+          var errmsg = {code : protocolType.ERR, msg : 'invalid password' };
+          ws.send(JSON.stringify(errmsg));
+          ws.close();
         }
       }    
     }
