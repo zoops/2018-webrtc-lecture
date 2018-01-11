@@ -13,22 +13,24 @@
             height: 240px;            
         }
     </style>
-    <!-- Add this to <head> -->
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
-    
-    <!-- Add this after vue.js -->
-    <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>   
     <script src="https://unpkg.com/vue"></script> 
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
 </head>
 <body>
-<video id="vid1" autoplay="true" muted="true" playsinline></video>
-<video id="vid2" autoplay playsinline></video>
-<br>
+<div style="float:left;">
+    <div>
+        <video id="vid1" autoplay="true" muted="true" playsinline style="float:none;"></video>
+    </div>
+    <input id="vid1_nick" ><button id="btn_change_nick" onclick="onChangeNick();">changeNick</button>
+</div>
+<div>
+    <div>
+        <video id="vid2" autoplay playsinline></video>
+    </div>
+    <input id="vid2_nick">
+</div>
 <button id="btn_start">start</button>
-<input id="room_id"/>
+<input id="room_id"/><input id="pwd"/>
 <div id="app">
     <button id="btn_refresh_room_list" @click="onUpdateRoomList">refresh room list</button>
     <div id="roomlist" style="overflow:scroll; width:350px; height:200px;border:1px solid red;" >
