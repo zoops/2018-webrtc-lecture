@@ -6,29 +6,22 @@ function trace(arg) {
 }
 
 // UI Element Value
-var output_offerDesc = document.querySelector('textarea#output_offerDesc');
 var input_answerDesc = document.querySelector('textarea#input_answerDesc');
 
 var vid1 = document.querySelector('#vid1');
 var vid2 = document.querySelector('#vid2');
 
 var btn_start = document.querySelector('#btn_start');
-var btn_finalOffer = document.querySelector('#btn_finalOffer');
-var btn_receiveAnswer = document.querySelector('#btn_receiveAnswer');
-
 
 var input_message = document.querySelector('#message');
-var btn_test = document.querySelector('#btn_test');
+var btn_send = document.querySelector('#btn_send');
 
 var roodId = document.querySelector('#room_id');
 
 btn_start.addEventListener('click', onStart);
-btn_finalOffer.addEventListener('click', onOffer);
-btn_receiveAnswer.addEventListener('click', onReceiveAnswer);
-btn_test.addEventListener('click', onTest);
+btn_send.addEventListener('click', onSend);
 // ---------------------------------------------------------------------------------
-function onTest(){
-    // g_mc_ws_component.sendMessage('test');
+function onSend(){
     sendDataViaDataChannel(input_message.value);
 }
 // ---------------------------------------------------------------------------------
@@ -89,6 +82,10 @@ function onStart() {
         ]
     };
     // cfg.iceServers.push({urls: "stun:stun.l.google.com:19302"});
+    // cfg.iceServers.push({
+    //     urls: "turn:webrtc.moberan.com",
+    //     username: "zoops", credential: "1234"
+    // });
 
     local_peer = new RTCPeerConnection(cfg);
     local_peer.onicecandidate = function (evt) {
@@ -120,6 +117,7 @@ function onStart() {
     };
 
     var url = 'ws://127.0.0.1:3001/room/' + roodId.value;
+    // var url = 'wss://zoops-webrtc-01.herokuapp.com/room/' + roodId.value;
     g_mc_ws_component.connect(url, onWsMessage);
     
     trace('## start success = create RTCPeerConnection and set callback ');
@@ -159,13 +157,6 @@ function receiveAnswer(sdpString) {
         sdp: sdpString
     };
     local_peer.setRemoteDescription(descObject);
-}
-
-function onReceiveAnswer() {
-    var sdpString = input_answerDesc.value;
-    receiveAnswer(sdpString);
-
-    trace('## receiveAnswer success');
 }
 
 function cbCreateOfferError(error) {
@@ -213,8 +204,5 @@ function cbCheckIceCandidateAdded(candidateObject) {
 
 function cbCheckIceCandidateCompleted(descObject) {
     trace('cbCheckIceCandidateCompleted');
-    console.info(descObject);
-    output_offerDesc.value = descObject.sdp;
-
-    g_mc_ws_component.sendMessage(output_offerDesc.value);
+    g_mc_ws_component.sendMessage(descObject.sdp);
 }
