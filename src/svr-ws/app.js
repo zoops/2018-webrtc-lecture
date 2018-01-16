@@ -22,6 +22,19 @@ app.get('/', function(req, res, next){
   res.send('Hello World');  
 });
 
+var stopwatchTop10 = [];
+
+app.get('/stopwatch/record', function(req, res, next) {
+  console.info(req);
+  
+  stopwatchTop10.push({name : req.query.name, record : req.query.record });
+  res.send('OK');
+});
+
+app.get('/stopwatch/top10', function(req, res, next) {
+  res.send(stopwatchTop10.sort());
+});
+
 app.get('/roomlist', function(req, res, next){
   res.send(Object.keys(rooms));  
 });
