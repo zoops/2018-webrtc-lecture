@@ -3,12 +3,44 @@
 <head>
 	<meta charset="UTF-8">
     <title>Stopwatch</title>
-    <script src="stopwatch.js"></script>
+    <script src="https://unpkg.com/vue"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+
 </head>
 <body onload="show();">
-	<div>Time: <span id="time"></span></div>
-	<input type="button" value="start" onclick="start();">
-	<input type="button" value="stop" onclick="stop();">
-	<input type="button" value="reset" onclick="reset()">
+
+    
+    <div>Time: <span id="time"></span></div>
+    <input type="button" value="start" onclick="start();">
+    <input type="button" value="stop" onclick="stop();">
+    <input type="button" value="reset" onclick="reset()">
+    <input type="button" value="test" onclick="test()">
+    <br/>
+    <form>
+        <input type = "button" value = "Check Navigator appName"
+        onclick = "document.getElementById('appName').value = navigator.appName;"/>
+        <br/>
+        <input id = "appName" type = "text" size = "110"/>
+        <br/>
+        <input type = "button" value = "Check Navigator appVersion"
+        onclick = "document.getElementById('appVersion').value = navigator.appVersion;"/>
+        <br/>
+        <input id = "appVersion"  type = "text" size = "110"/>
+    </form>
+    <div id="app">
+            <input type="button" value="send" @click="onSend()">
+            <input type="button" value="top10" @click="onUpdateTop10()">
+
+            <br/>
+            <div id="top10" style="overflow:scroll; width:350px; height:200px;border:1px solid red;" >
+                <ul>
+                    <li v-for="obj in top10s">
+                        {{ obj.name }} : {{ obj.record }}
+                    </li>
+                </ul>    
+            </div>
+                        
+    </div>
 </body>
+<script src="stopwatch.js"></script>
 </html>

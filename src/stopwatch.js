@@ -96,3 +96,36 @@ function reset() {
     x.reset();
     update();
 }
+
+function test() {
+    alert('test');
+
+    window.alert('test2');
+}
+
+var app = new Vue({
+    el: '#app',
+    data: {
+        top10s : [
+        ],
+    },
+    methods: {
+        onSend : function (event) {
+            var data = 'name=jhbaik&record=' + $time.innerHTML;
+
+            app.$http.get('http://localhost:3001/stopwatch' + '/record' + '?' + data).then(response => {
+                alert(response.body);
+            }, response => {
+                alert(response);
+            });          
+        },
+        onUpdateTop10 : function(event) {
+            app.$http.get('http://localhost:3001/stopwatch' + '/top10').then(response => {
+                app.top10s = response.body;
+            }, response => {
+                alert(response);
+            });          
+            
+        },
+    }
+  });
